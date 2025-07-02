@@ -3,24 +3,26 @@
 
 #include <Arduino.h>
 #include <WiFi.h>
-// #include <ESPAsyncWebServer.h>
 
 class WebAPI
 {
 public:
   void setup();
   void loop();
+  
+private: // Gør funktioner private, da de kun kaldes internt
   bool connectWIFI();
   void startServer();
-  void connectToBestNetwork();
-  void waitForConnection();
+  void checkConnection(); // NYT: Funktion til at tjekke forbindelsens sundhed
 
-private:
   bool connected;
+  bool serverStarted; // Flyttet fra global i .cpp
   int connectTries;
   unsigned long nextAttemptTime;
-  const unsigned long initialDelay = 5000; // Start delay på 5 sekunder
-  const unsigned long maxDelay = 300000;   // Maksimal delay på 5 minutter
+  unsigned long lastConnectionCheck; // NYT: Timer for sundhedstjek
+
+  const unsigned long initialDelay = 5000;
+  const unsigned long maxDelay = 300000;
 };
 
 #endif
